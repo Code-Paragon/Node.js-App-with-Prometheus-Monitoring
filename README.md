@@ -1,10 +1,10 @@
-# 📝 Node.js App with Prometheus Monitoring
+#  Node.js App with Prometheus Monitoring
 
 A lightweight Node.js web application instrumented with Prometheus metrics and designed for containerized deployment and Kubernetes integration. Useful for demonstrating basic monitoring, instrumentation, and service exposure.
 
 ---
 
-## 🚀 Features
+##  Features
 
 - **Express-based Web Server** with basic team info UI
 - **Prometheus Metrics Endpoint** at `/metrics`
@@ -15,7 +15,7 @@ A lightweight Node.js web application instrumented with Prometheus metrics and d
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - Node.js + Express
 - prom-client (Prometheus instrumentation)
@@ -25,7 +25,7 @@ A lightweight Node.js web application instrumented with Prometheus metrics and d
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```text
 app/
@@ -39,7 +39,7 @@ package.json         # Node.js dependencies
 ```
 ---
 
-## 📊 Metrics Exposed
+##  Metrics Exposed
 
 | Metric                       | Description                          |
 |------------------------------|--------------------------------------|
@@ -53,7 +53,7 @@ http://<your-service-ip>:3000/metrics
 ```
 ---
 
-## 🐳 Docker Usage
+##  Docker Usage
 
 ```bash
 docker build -t your-repo/node-monitoring:latest .
@@ -61,7 +61,7 @@ docker push your-repo/node-monitoring:latest
 ```
 ---
 
-## ☸️ Kubernetes Deployment
+##  Kubernetes Deployment
 
 Ensure Prometheus operator is running and apply:
 
