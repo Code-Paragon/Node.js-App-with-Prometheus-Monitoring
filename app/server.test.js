@@ -1,3 +1,3 @@
-test('Basic server test', () => {
-  expect(true).toBe(true); // placeholder
+test('Dummy test to pass CI', () => {
+  expect(1 + 1).toBe(2);
 });

@@ -1,15 +1,12 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline to EKS
 
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 jobs:
   build-test-analyze:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -38,30 +35,38 @@ jobs:
   dockerize-and-push:
     needs: build-test-analyze
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      - name: Build Docker Image
+      - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/node-monitoring:latest .
 
-      - name: Push Docker Image
+      - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/node-monitoring:latest
 
   deploy:
     needs: dockerize-and-push
     runs-on: ubuntu-latest
-
     steps:
-      - name: Set up Kubeconfig
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up kubeconfig
         run: |
           mkdir -p ~/.kube
           echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > ~/.kube/config
 
-      - name: Deploy to Kubernetes
+      - name: Create imagePullSecret for private DockerHub
         run: |
-          kubectl apply -f k8s/k8s-config.yaml
+          kubectl create secret docker-registry my-registry-key \
+            --docker-username=${{ secrets.DOCKERHUB_USERNAME }} \
+            --docker-password=${{ secrets.DOCKERHUB_TOKEN }} \
+            --docker-server=https://index.docker.io/v1/ \
+            --namespace=default \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploy to EKS
+        run: kubectl apply -f k8s/k8s-config.yaml

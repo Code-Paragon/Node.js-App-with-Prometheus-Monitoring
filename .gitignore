@@ -12,18 +12,33 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# IDE files
+# IDE/editor configs
 .idea/
 .vscode/
 
-# System files
+# OS system files
 .DS_Store
 Thumbs.db
+.ds_store
 
 # Docker-related
 *.local
 docker-compose.override.yml
 
-# Optional build output
+# Build artifacts
 dist/
 build/
+
+# Terraform local state, plan files, and module cache
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfplan
+terraform.tfstate.backup
+
+# Terraform working dirs and modules
+.terraform/
+.terraform.lock.hcl
+# Ignore embedded module git repos (defensive)
+**/.terraform/modules/**/.git
+**/.terraform/modules/**/.github
