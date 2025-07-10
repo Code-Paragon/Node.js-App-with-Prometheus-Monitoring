@@ -76,5 +76,11 @@ jobs:
             --namespace=default \
             --dry-run=client -o yaml | kubectl apply -f -
 
+      - name: Install Prometheus Operator CRDs
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/bundle.yaml
+          echo "Waiting for ServiceMonitor CRD to be established..."
+          kubectl wait --for=condition=Established --timeout=60s crd/servicemonitors.monitoring.coreos.com
+
       - name: Deploy to EKS
         run: kubectl apply -f k8s/k8s-config.yaml
