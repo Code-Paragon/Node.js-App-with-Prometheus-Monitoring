@@ -42,3 +42,5 @@ terraform.tfstate.backup
 # Ignore embedded module git repos (defensive)
 **/.terraform/modules/**/.git
 **/.terraform/modules/**/.github
+
+kubeconfig_myapp-eks-cluster

@@ -28,9 +28,12 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=Code-Paragon_Node.js-App-with-Prometheus-Monitoring
+            -Dsonar.organization=code-paragon
+            -Dsonar.sources=.
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   dockerize-and-push:
     needs: build-test-analyze
@@ -45,7 +48,7 @@ jobs:
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/node-monitoring:latest .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/node-monitoring:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/node-monitoring:latest --quiet
 
   deploy:
     needs: dockerize-and-push
